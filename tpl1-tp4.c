@@ -14,15 +14,21 @@ typedef struct Nodo{
     struct Nodo *Sig;
 }Nodo;
 
+
+Nodo *CrearListaVacia();
 void * crearNodoTarea(int indice, int duracion);
 void insertarNodo(Nodo **start, Nodo *NNodo);
+Nodo * BuscarNodo(Nodo ** Start,int id);
+Nodo * QuitarNodo(Nodo ** Start,int id);
+void ListarLista(Nodo **start);
 
 int main(){
     char valor;
-    int indice=1000,duracion;
+    int indice=1000,duracion,iaux;
    
- Nodo *start=NULL;
- Nodo *aux;
+    Nodo * start = CrearListaVacia();
+    Nodo * startLR= CrearListaVacia();
+    Nodo * aux;
 
     
 
@@ -42,17 +48,38 @@ int main(){
         scanf("%c",&valor);
 
     }
+    0
+        printf("\n ID de la tarea pendiente para marcar realizada: ");
+        scanf("%d",&iaux);
+        
+        
+        while(iaux!=0){
+
+     
+        aux=BuscarNodo(&start,iaux);
+            
+                if(aux){
+                    aux=QuitarNodo(&start,iaux);
+                    insertarNodo(&startLR,aux);
+                    
+                }else {
+                    printf("id no encontrado");
+                    
+                }
+
+        printf("\n ID de la tarea pendiente para marcar realizada(0 para terminar):  ");
+        scanf("%d",&iaux);
+
+        }
+
+
     
     
-    /*
-    codigo para mostrar lista enlazada. despues lo tengo que poner en una funcion.
-    aux=start;
-    
-    while(aux){
-        printf("Indice: %d \n",aux->T.TareaID);
-        printf("Duracion: %d \n",aux->T.Duracion);
-        aux=aux->Sig;
-    }*/
+    printf("\n\n LISTA DE TARES REALIZADAS\n");
+    ListarLista(&startLR);
+    printf("\n\n LISTA DE TAREAS PENDIENTES\n");
+    ListarLista(&start);
+
 
 
 
@@ -77,3 +104,63 @@ void insertarNodo(Nodo **start, Nodo *NNodo){
     NNodo->Sig=*start;
     *start=NNodo;
 }
+
+Nodo * BuscarNodo(Nodo ** Start,int id)
+{
+  Nodo * Aux = (*Start);
+  while (Aux && Aux->T.TareaID != id)
+  {
+    Aux = Aux->Sig;
+    
+  }
+  return Aux;
+}
+
+
+Nodo * CrearListaVacia()
+{
+    return NULL;
+}
+
+Nodo * QuitarNodo(Nodo ** Start,int id)
+{
+  Nodo * Aux = *Start;
+  Nodo * AuxAnterior=NULL;
+
+  while (Aux!=NULL && Aux->T.TareaID!= id)
+  {
+    AuxAnterior=Aux;
+    Aux = Aux->Sig;
+    
+  }
+
+  if (Aux!=NULL){
+
+        if(Aux==(*Start)){
+
+            (*Start)=Aux->Sig;
+        }else
+        {
+            AuxAnterior->Sig=Aux->Sig;
+        }
+    
+        Aux->Sig=NULL;
+  } 
+
+  return(Aux);
+
+    
+  }
+
+  void ListarLista(Nodo **start){
+
+    Nodo *aux;
+    aux=*start;
+    
+    while(aux){
+        printf("Indice: %d \n",aux->T.TareaID);
+        printf("Duracion: %d \n",aux->T.Duracion);
+        aux=aux->Sig;
+    }
+
+  }
