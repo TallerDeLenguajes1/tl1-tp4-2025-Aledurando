@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX 100;
 
 
 typedef struct {
@@ -25,6 +26,7 @@ void ListarLista(Nodo **start);
 int main(){
     char valor;
     int indice=1000,duracion,iaux;
+    char descrip[MAX];
    
     Nodo * start = CrearListaVacia();
     Nodo * startLR= CrearListaVacia();
@@ -39,17 +41,21 @@ int main(){
     while(valor==115 || valor==83){
         
         indice++;
+        printf("Descripcion");
+        gets(descrip);
         printf("Duracion: ");
         scanf("%d",&duracion);
+        
         insertarNodo(&start,crearNodoTarea(indice,duracion));
+
         getchar();
         fflush(stdin);
         printf("¿Desea cargar otra tarea? (S/N):");
         scanf("%c",&valor);
 
     }
-    0
-        printf("\n ID de la tarea pendiente para marcar realizada: ");
+    
+        printf("\n ID de la tarea pendiente para marcar realizada(0 para terminar): ");
         scanf("%d",&iaux);
         
         
@@ -65,7 +71,7 @@ int main(){
                 }else {
                     printf("id no encontrado");
                     
-                }
+                };
 
         printf("\n ID de la tarea pendiente para marcar realizada(0 para terminar):  ");
         scanf("%d",&iaux);
@@ -90,9 +96,8 @@ int main(){
 void * crearNodoTarea(int indice, int duracion){
 
     Nodo *NNodo=(Nodo *)malloc(sizeof(Nodo));
-    NNodo->T.TareaID=indice; 
-    //printf("Ingresar descripcion de la tarea:");
-    //gets(NNodo->T.Descripcion);
+    NNodo->T.TareaID=indice;
+
     NNodo->T.Duracion=duracion;
     NNodo->Sig=NULL;
     return NNodo;
