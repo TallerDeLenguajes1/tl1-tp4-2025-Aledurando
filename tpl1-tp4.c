@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 100;
+
 
 
 typedef struct {
@@ -17,42 +17,42 @@ typedef struct Nodo{
 
 
 Nodo *CrearListaVacia();
-void * crearNodoTarea(int indice, int duracion);
+void * crearNodoTarea(int indice);
 void insertarNodo(Nodo **start, Nodo *NNodo);
 Nodo * BuscarNodo(Nodo ** Start,int id);
 Nodo * QuitarNodo(Nodo ** Start,int id);
 void ListarLista(Nodo **start);
 
 int main(){
-    char valor;
-    int indice=1000,duracion,iaux;
-    char descrip[MAX];
+    int valor;
+    int indice=1000,iaux,opcion;
+
    
     Nodo * start = CrearListaVacia();
     Nodo * startLR= CrearListaVacia();
     Nodo * aux;
 
-    
+    printf("Ingresar opcion:");
+    scanf("%d",&opcion);
+    switch (opcion)
+    {
+        case 1: {
+                    do{
+                        printf("Lista de tares pendientes: \n");
+                        printf("¿Desea cargar una tarea?( [1].SI [0].NO ) : ");
+                        scanf("%d",&valor);
 
-    printf("Lista de tares pendientes: \n");
-    printf("¿Desea cargar una tarea? (S/N):");
-    scanf("%c",&valor);
-    
-    while(valor==115 || valor==83){
+                        if(valor==1)insertarNodo(&start,crearNodoTarea(indice));                  
+                    
+                    }while(valor!=0);
+
+            
+                    }
         
-        indice++;
-        printf("Descripcion");
-        gets(descrip);
-        printf("Duracion: ");
-        scanf("%d",&duracion);
-        
-        insertarNodo(&start,crearNodoTarea(indice,duracion));
-
-        getchar();
-        fflush(stdin);
-        printf("¿Desea cargar otra tarea? (S/N):");
-        scanf("%c",&valor);
-
+        break;
+    
+    default:
+        break;
     }
     
         printf("\n ID de la tarea pendiente para marcar realizada(0 para terminar): ");
@@ -93,12 +93,39 @@ int main(){
 
 }
 
-void * crearNodoTarea(int indice, int duracion){
+void * crearNodoTarea(int indice){
 
     Nodo *NNodo=(Nodo *)malloc(sizeof(Nodo));
+    
+    indice++;
+    int tareaDuracion,control=0;
+    char *buff = (char *)malloc(sizeof(char)*100); //creamos variable buffer. 
+    
     NNodo->T.TareaID=indice;
 
-    NNodo->T.Duracion=duracion;
+    printf("\nIngrese la descripcion de la tarea: ");
+    fflush(stdin);
+    getchar();
+    gets(buff);
+
+    NNodo->T.Descripcion = (char *)malloc((strlen(buff)+1)*sizeof(char)); //RECORDAR LIBERAR
+    strcpy(NNodo->T.Descripcion, buff); 
+    free(buff);
+
+
+ 
+        do{
+            printf("\nIngresar duracion de la tarea entre 10-100:  ");
+            scanf("%d",&tareaDuracion);
+            if(tareaDuracion>=10 && tareaDuracion<=100){
+                NNodo->T.Duracion=tareaDuracion;
+                control=1;
+            }else 
+                printf("\nERROR VALOR FUERA DE RANGO.");
+        
+        }while(control!=1);
+
+  
     NNodo->Sig=NULL;
     return NNodo;
            
