@@ -3,7 +3,6 @@
 #include <string.h>
 
 
-
 typedef struct {
     int TareaID; //Numérico autoincremental comenzando en 1000
     char *Descripcion; //char menor a 100 caracteres.
@@ -23,6 +22,8 @@ Nodo * BuscarNodo(Nodo ** Start,int id);
 Nodo * QuitarNodo(Nodo ** Start,int id);
 void ListarLista(Nodo **start);
 void BuscarPalabraClave(Nodo *L1, Nodo *L2);
+void eliminarPrimerElemento(Nodo **Lista);
+
 
 int main(){
     int valor;
@@ -73,6 +74,7 @@ int main(){
                                 if(aux){ //Si existe el nodo que devuelve buscarnodo.
                                     aux=QuitarNodo(&start,iaux); //lo quito al nodo de la lista pendientes
                                     insertarNodo(&startLR,aux); //agrego al nodo a la lista realizados.
+
                                     
                                 }else {
                                     printf("id no encontrado");
@@ -108,6 +110,27 @@ int main(){
         }
     
     }while(opcion!=5);
+
+ //iniciamos ciclos para liberar memoria de las listas usadas. 
+
+    while (start!=NULL){
+        free(start->T.Descripcion);
+        eliminarPrimerElemento(&start);
+        
+    }
+
+    while (startLR!=NULL){
+        free(startLR->T.Descripcion);
+        eliminarPrimerElemento(&startLR);
+        
+    }
+
+    while (aux!=NULL){
+        free(aux->T.Descripcion);
+        eliminarPrimerElemento(&aux);
+        
+    }
+
 
     return 0;
 
@@ -327,4 +350,14 @@ void BuscarPalabraClave(Nodo *LPendientes, Nodo *LRealizadas){
 
     
 
+}
+
+
+void eliminarPrimerElemento(Nodo **Lista){
+    if (*Lista != NULL)
+    {
+        Nodo *aux = *Lista; //guardar actual en nodo auxiliar
+        *Lista = (*Lista)->Sig; //dar la direccion del proximo nodo
+        free(aux); //liberar nodo.
+    }
 }
